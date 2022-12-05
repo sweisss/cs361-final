@@ -3,14 +3,18 @@
 
 # A point represented by a latitude, longitude, and optional elevation, name, and icon.
 class Waypoint
-  attr_reader :lat, :lon, :ele, :name, :type
+  attr_reader :lat, :lon, :ele, :name, :icon
 
-  def initialize(lon, lat, ele = nil, name = nil, type = nil)
+  def initialize(lon, lat, ele = nil, name = nil, icon = nil)
     @lat = lat
     @lon = lon
     @ele = ele
     @name = name
-    @type = type # Why is type optional? Can we default it to "Point"?
+    @icon = icon
+  end
+
+  def properties
+    properties = {'title' => name, 'icon' => icon}
   end
 
   def to_json(_indent = 0)
@@ -19,12 +23,12 @@ class Waypoint
     j += "[#{lon},#{lat}"
     j += ",#{ele}" unless ele.nil?
     j += ']},'
-    if !name.nil? || !type.nil?
+    if !name.nil? || !icon.nil?
       j += '"properties": {'
       j += "\"title\": \"#{name}\"" unless name.nil?
-      unless type.nil?
+      unless icon.nil?
         j += ',' unless name.nil?
-        j += "\"icon\": \"#{type}\"" # type is the icon
+        j += "\"icon\": \"#{icon}\""
       end
       j += '}'
     end

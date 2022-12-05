@@ -16,15 +16,15 @@ class Waypoint
   def to_json(_indent = 0)
     j = '{"type": "Feature",'
     j += '"geometry": {"type": "Point","coordinates": '
-    j += "[#{@lon},#{@lat}"
-    j += ",#{@ele}" unless ele.nil?
+    j += "[#{lon},#{lat}"
+    j += ",#{ele}" unless ele.nil?
     j += ']},'
     if !name.nil? || !type.nil?
       j += '"properties": {'
-      j += "\"title\": \"#{@name}\"" unless name.nil?
+      j += "\"title\": \"#{name}\"" unless name.nil?
       unless type.nil?
         j += ',' unless name.nil?
-        j += "\"icon\": \"#{@type}\"" # type is the icon
+        j += "\"icon\": \"#{type}\"" # type is the icon
       end
       j += '}'
     end
@@ -44,6 +44,8 @@ end
 
 # A list of Track Segments.
 class Track
+  attr_reader :segments, :name
+
   def initialize(segments, name = nil)
     @name = name
     segment_objects = []
@@ -56,16 +58,16 @@ class Track
   def to_json(_indent = 0)
     j = '{'
     j += '"type": "Feature", '
-    unless @name.nil?
+    unless name.nil?
       j += '"properties": {'
-      j += "\"title\": \"#{@name}\""
+      j += "\"title\": \"#{name}\""
       j += '},'
     end
     j += '"geometry": {'
     j += '"type": "MultiLineString",'
     j += '"coordinates": ['
     # Loop through all the segment objects
-    @segments.each_with_index do |s, index|
+    segments.each_with_index do |s, index|
       j += ',' if index.positive?
       j += '['
       # Loop through all the coordinates in the segment
@@ -87,19 +89,21 @@ end
 
 # Puts together a wolrd or Tracks and Waypoints
 class World
+  attr_reader :name, :features
+
   def initialize(name, things)
     @name = name
     @features = things
   end
 
   def add_feature(_f)
-    @features.append(t)
+    features.append(t)
   end
 
   def to_geojson(_indent = 0)
     # Write stuff
     s = '{"type": "FeatureCollection","features": ['
-    @features.each_with_index do |f, i|
+    features.each_with_index do |f, i|
       s += ',' if i != 0
       if f.instance_of?(Track)
         s += f.to_json

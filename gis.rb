@@ -12,7 +12,7 @@ class Track
     @segments = segment_objects
   end
 
-  def get_track_json
+  def to_json
     j = '{'
     j += '"type": "Feature", '
     unless @name.nil?
@@ -73,7 +73,7 @@ class Waypoint
     @type = type
   end
 
-  def get_waypoint_json(_indent = 0)
+  def to_json(_indent = 0)
     j = '{"type": "Feature",'
     # if name is not nil or type is not nil
     j += '"geometry": {"type": "Point","coordinates": '
@@ -110,9 +110,9 @@ class World
     @features.each_with_index do |f, i|
       s += ',' if i != 0
       if f.instance_of?(Track)
-        s += f.get_track_json
+        s += f.to_json
       elsif f.instance_of?(Waypoint)
-        s += f.get_waypoint_json
+        s += f.to_json
       end
     end
     "#{s}]}"

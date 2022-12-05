@@ -1,6 +1,48 @@
 #!/usr/bin/env ruby
 # frozen_string_literal: true
 
+class Point
+  attr_reader :lat, :lon, :ele
+
+  def initialize(lon, lat, ele = nil)
+    @lon = lon
+    @lat = lat
+    @ele = ele
+  end
+end
+
+class Waypoint
+  attr_reader :lat, :lon, :ele, :name, :type
+
+  def initialize(lon, lat, ele = nil, name = nil, type = nil)
+    @lat = lat
+    @lon = lon
+    @ele = ele
+    @name = name
+    @type = type
+  end
+
+  def to_json(_indent = 0)
+    j = '{"type": "Feature",'
+    # if name is not nil or type is not nil
+    j += '"geometry": {"type": "Point","coordinates": '
+    j += "[#{@lon},#{@lat}"
+    j += ",#{@ele}" unless ele.nil?
+    j += ']},'
+    if !name.nil? || !type.nil?
+      j += '"properties": {'
+      j += "\"title\": \"#{@name}\"" unless name.nil?
+      unless type.nil? # if type is not nil
+        j += ',' unless name.nil?
+        j += "\"icon\": \"#{@type}\"" # type is the icon
+      end
+      j += '}'
+    end
+    j += '}'
+    j
+  end
+end
+
 class Track
   def initialize(segments, name = nil)
     @name = name
@@ -49,48 +91,6 @@ class TrackSegment
 
   def initialize(coordinates)
     @coordinates = coordinates
-  end
-end
-
-class Point
-  attr_reader :lat, :lon, :ele
-
-  def initialize(lon, lat, ele = nil)
-    @lon = lon
-    @lat = lat
-    @ele = ele
-  end
-end
-
-class Waypoint
-  attr_reader :lat, :lon, :ele, :name, :type
-
-  def initialize(lon, lat, ele = nil, name = nil, type = nil)
-    @lat = lat
-    @lon = lon
-    @ele = ele
-    @name = name
-    @type = type
-  end
-
-  def to_json(_indent = 0)
-    j = '{"type": "Feature",'
-    # if name is not nil or type is not nil
-    j += '"geometry": {"type": "Point","coordinates": '
-    j += "[#{@lon},#{@lat}"
-    j += ",#{@ele}" unless ele.nil?
-    j += ']},'
-    if !name.nil? || !type.nil?
-      j += '"properties": {'
-      j += "\"title\": \"#{@name}\"" unless name.nil?
-      unless type.nil? # if type is not nil
-        j += ',' unless name.nil?
-        j += "\"icon\": \"#{@type}\"" # type is the icon
-      end
-      j += '}'
-    end
-    j += '}'
-    j
   end
 end
 

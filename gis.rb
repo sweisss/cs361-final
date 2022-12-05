@@ -10,12 +10,11 @@ class Waypoint
     @lon = lon
     @ele = ele
     @name = name
-    @type = type
+    @type = type # Why is type optional? Can we default it to "Point"?
   end
 
   def to_json(_indent = 0)
     j = '{"type": "Feature",'
-    # if name is not nil or type is not nil
     j += '"geometry": {"type": "Point","coordinates": '
     j += "[#{@lon},#{@lat}"
     j += ",#{@ele}" unless ele.nil?
@@ -23,7 +22,7 @@ class Waypoint
     if !name.nil? || !type.nil?
       j += '"properties": {'
       j += "\"title\": \"#{@name}\"" unless name.nil?
-      unless type.nil? # if type is not nil
+      unless type.nil?
         j += ',' unless name.nil?
         j += "\"icon\": \"#{@type}\"" # type is the icon
       end
@@ -49,9 +48,8 @@ class Track
     @name = name
     segment_objects = []
     segments.each do |s|
-      segment_objects.append(TrackSegment.new(s))
+      segment_objects.append(TrackSegment.new(s)) # inject this dependency
     end
-    # set segments to segment_objects
     @segments = segment_objects
   end
 

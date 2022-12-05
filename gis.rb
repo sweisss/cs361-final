@@ -1,6 +1,7 @@
 #!/usr/bin/env ruby
 # frozen_string_literal: true
 
+# A point represented by a latitude, longitude, and optional elevation, name, and icon.
 class Waypoint
   attr_reader :lat, :lon, :ele, :name, :type
 
@@ -33,6 +34,16 @@ class Waypoint
   end
 end
 
+# A  list of latitude/longitude pairs (with optional elevation).
+class TrackSegment
+  attr_reader :coordinates
+
+  def initialize(coordinates)
+    @coordinates = coordinates
+  end
+end
+
+# A list of Track Segments.
 class Track
   def initialize(segments, name = nil)
     @name = name
@@ -44,7 +55,7 @@ class Track
     @segments = segment_objects
   end
 
-  def to_json
+  def to_json(_indent = 0)
     j = '{'
     j += '"type": "Feature", '
     unless @name.nil?
@@ -76,14 +87,7 @@ class Track
   end
 end
 
-class TrackSegment
-  attr_reader :coordinates
-
-  def initialize(coordinates)
-    @coordinates = coordinates
-  end
-end
-
+# Puts together a wolrd or Tracks and Waypoints
 class World
   def initialize(name, things)
     @name = name

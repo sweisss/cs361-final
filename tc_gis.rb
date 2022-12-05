@@ -4,6 +4,7 @@ require_relative 'gis'
 require 'json'
 require 'test/unit'
 
+# Tests for the gis.rb file
 class TestGis < Test::Unit::TestCase
   def test_waypoints
     wp = Waypoint.new(-121.5, 45.5, 30, 'home', 'flag')

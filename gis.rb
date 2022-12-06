@@ -11,13 +11,28 @@ class Waypoint
     @ele = ele
     @name = name
     @icon = icon
+    @type = 'Feature'
   end
 
   def properties
-    properties = {'title' => name, 'icon' => icon}
+    properties = { 'title' => name, 'icon' => icon }
+    properties = properties.compact
+  end
+
+  def coordinates
+    coordinates = [lat, lon, ele]
+    coordinates = coordinates.compact
+  end
+
+  def data
+    data = { 'type' => 'Feature', 
+      'properties' => properties,
+      'geometry' => {'type' => 'Point',
+        'coordinates' => coordinates}}
   end
 
   def to_json(_indent = 0)
+    # data.to_json
     j = '{"type": "Feature",'
     j += '"geometry": {"type": "Point","coordinates": '
     j += "[#{lon},#{lat}"

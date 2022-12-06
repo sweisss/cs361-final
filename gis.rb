@@ -39,7 +39,7 @@ end
 
 # A  list of latitude/longitude pairs (with optional elevation).
 class TrackSegment
-  attr_reader :waypoints, :coordinates
+  attr_reader :waypoints
 
   def initialize(waypoints)
     @waypoints = waypoints
@@ -87,17 +87,17 @@ class Track
   end
 end
 
-# Puts together a wolrd or Tracks and Waypoints
+# Puts together a world of Tracks and Waypoints
 class World
   attr_reader :name, :features
 
-  def initialize(name, things)
+  def initialize(name, features)
     @name = name
-    @features = things
+    @features = features
   end
 
-  def add_feature(_f)
-    features.append(t)
+  def add_feature(feature)
+    features.append(feature)
   end
 
   def to_geojson(_indent = 0)

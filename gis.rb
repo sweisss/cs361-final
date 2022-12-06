@@ -100,18 +100,21 @@ class World
     features.append(feature)
   end
 
-  def to_geojson(_indent = 0)
-    # Write stuff
-    s = '{"type": "FeatureCollection","features": ['
-    features.each_with_index do |f, i|
-      s += ',' if i != 0
-      if f.instance_of?(Track)
-        s += f.to_json
-      elsif f.instance_of?(Waypoint)
-        s += f.to_json
-      end
+  def collect
+    collection = []
+    features.each do |f|
+      collection.append(f.data)
     end
-    "#{s}]}"
+    collection
+  end
+
+  def data
+    data = { 'type' => "FeatureCollection",
+            'features' => collect}
+  end
+
+  def to_geojson
+    data.to_json
   end
 end
 

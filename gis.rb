@@ -50,11 +50,12 @@ class Track
 
   def initialize(segments, name = nil)
     @name = name
-    segment_objects = []
-    segments.each do |s|
-      segment_objects.append(TrackSegment.new(s)) # inject this dependency
-    end
-    @segments = segment_objects
+    # segment_objects = []
+    # segments.each do |s|
+    #   segment_objects.append(TrackSegment.new(s)) # inject this dependency
+    # end
+    # @segments = segment_objects
+    @segments = segments
   end
 
   def to_json(_indent = 0)

@@ -30,18 +30,19 @@ class TestGis < Test::Unit::TestCase
   end
 
   def test_tracks
-    ts1 = [
-      Waypoint.new(-122, 45),
-      Waypoint.new(-122, 46),
-      Waypoint.new(-121, 46)
-    ]
+    ts1 = TrackSegment.new([
+                             Waypoint.new(-122, 45),
+                             Waypoint.new(-122, 46),
+                             Waypoint.new(-121, 46)
+                           ])
 
-    ts2 = [Waypoint.new(-121, 45), Waypoint.new(-121, 46)]
+    ts2 = TrackSegment.new(
+      [Waypoint.new(-121, 45), Waypoint.new(-121, 46)]
+    )
 
-    ts3 = [
-      Waypoint.new(-121, 45.5),
-      Waypoint.new(-122, 45.5)
-    ]
+    ts3 = TrackSegment.new(
+      [Waypoint.new(-121, 45.5), Waypoint.new(-122, 45.5)]
+    )
 
     t = Track.new([ts1, ts2], 'track 1')
     expected = JSON.parse('{"type": "Feature",
@@ -63,18 +64,18 @@ class TestGis < Test::Unit::TestCase
   def test_world
     wp = Waypoint.new(-121.5, 45.5, 30, 'home', 'flag')
     wp2 = Waypoint.new(-121.5, 45.6, nil, 'store', 'dot')
-    ts1 = [
-      Waypoint.new(-122, 45),
-      Waypoint.new(-122, 46),
-      Waypoint.new(-121, 46)
-    ]
+    ts1 = TrackSegment.new([
+                             Waypoint.new(-122, 45),
+                             Waypoint.new(-122, 46),
+                             Waypoint.new(-121, 46)
+                           ])
 
-    ts2 = [Waypoint.new(-121, 45), Waypoint.new(-121, 46)]
+    ts2 = TrackSegment.new([Waypoint.new(-121, 45), Waypoint.new(-121, 46)])
 
-    ts3 = [
-      Waypoint.new(-121, 45.5),
-      Waypoint.new(-122, 45.5)
-    ]
+    ts3 = TrackSegment.new([
+                             Waypoint.new(-121, 45.5),
+                             Waypoint.new(-122, 45.5)
+                           ])
 
     t = Track.new([ts1, ts2], 'track 1')
     t2 = Track.new([ts3], 'track 2')

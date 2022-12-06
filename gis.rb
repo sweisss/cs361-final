@@ -55,6 +55,25 @@ class Track
     @segments = segments
   end
 
+  def properties
+    properties = { 'title' => name }
+    properties = properties.compact
+  end
+
+  def coordinates
+    segment.coordinates
+  end
+
+  def data
+    data = { 'type' => 'Feature', 'properties' => properties,
+             'geometry' => 'MultiLineString',
+             'coordinates' => coordinates }
+  end
+
+  # def to_json(_indent = 0)
+  #   data.to_json
+  # end
+
   def to_json(_indent = 0)
     j = '{'
     j += '"type": "Feature", '

@@ -5,7 +5,7 @@ require 'json'
 
 # A point represented by a latitude, longitude, and optional elevation, name, and icon.
 class Waypoint
-  attr_reader :lat, :lon, :ele, :name, :icon
+  attr_reader :lat, :lon, :ele, :name, :icon, :type, :gtype
 
   def initialize(lon, lat, ele = nil, name = nil, icon = nil)
     @lat = lat
@@ -13,6 +13,8 @@ class Waypoint
     @ele = ele
     @name = name
     @icon = icon
+    @type = 'Feature'
+    @gtype = 'Point'
   end
 
   def properties
@@ -25,11 +27,14 @@ class Waypoint
     coordinates = coordinates.compact
   end
 
+  def geometry
+    geometry = { 'type' => gtype, 'coordinates' => coordinates}
+  end
+
   def data
-    data = { 'type' => 'Feature',
+    data = { 'type' => type,
              'properties' => properties,
-             'geometry' => { 'type' => 'Point',
-                             'coordinates' => coordinates } }
+             'geometry' => geometry }
   end
 
   def to_json(_indent = 0)
@@ -56,11 +61,13 @@ end
 
 # A list of Track Segments.
 class Track
-  attr_reader :segments, :name
+  attr_reader :segments, :name, :type, :gtype
 
   def initialize(segments, name: nil)
     @name = name
     @segments = segments
+    @type = 'Feature'
+    @gtype = 'MultiLineString'
   end
 
   def properties
@@ -76,10 +83,13 @@ class Track
     coordinates
   end
 
+  def geometry
+    geometry = { 'type' => gtype, 'coordinates' => coordinates }
+  end
+
   def data
-    data = { 'type' => 'Feature', 'properties' => properties,
-             'geometry' => { 'type' => 'MultiLineString',
-                             'coordinates' => coordinates } }
+    data = { 'type' => type, 'properties' => properties,
+             'geometry' => geometry }
   end
 
   def to_json(_indent = 0)
@@ -89,11 +99,12 @@ end
 
 # Puts together a world of Tracks and Waypoints
 class World
-  attr_reader :name, :features
+  attr_reader :name, :features, :type
 
   def initialize(name, features)
     @name = name
     @features = features
+    @type = 'FeatureCollection'
   end
 
   def add_feature(feature)
@@ -109,7 +120,7 @@ class World
   end
 
   def data
-    data = { 'type' => "FeatureCollection",
+    data = { 'type' => type,
             'features' => collect}
   end
 

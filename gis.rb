@@ -39,10 +39,18 @@ end
 
 # A  list of latitude/longitude pairs (with optional elevation).
 class TrackSegment
-  attr_reader :coordinates
+  attr_reader :waypoints, :coordinates
 
-  def initialize(coordinates)
-    @coordinates = coordinates
+  def initialize(waypoints)
+    @waypoints = waypoints
+  end
+
+  def coordinates
+    coordinates = []
+    waypoints.each do |c|
+      coordinates.append(c.coordinates)
+    end
+    coordinates
   end
 end
 
@@ -61,49 +69,53 @@ class Track
   end
 
   def coordinates
-    segment.coordinates
+    coordinates = []
+    segments.each do |s|
+      coordinates.append(s.coordinates)
+    end
+    coordinates
   end
 
   def data
     data = { 'type' => 'Feature', 'properties' => properties,
-             'geometry' => 'MultiLineString',
-             'coordinates' => coordinates }
+             'geometry' => { 'type' => 'MultiLineString',
+             'coordinates' => coordinates }}
+  end
+
+  def to_json(_indent = 0)
+    data.to_json
   end
 
   # def to_json(_indent = 0)
-  #   data.to_json
+  #   j = '{'
+  #   j += '"type": "Feature", '
+  #   unless name.nil?
+  #     j += '"properties": {'
+  #     j += "\"title\": \"#{name}\""
+  #     j += '},'
+  #   end
+  #   j += '"geometry": {'
+  #   j += '"type": "MultiLineString",'
+  #   j += '"coordinates": ['
+  #   # Loop through all the segment objects
+  #   segments.each_with_index do |s, index|
+  #     j += ',' if index.positive?
+  #     j += '['
+  #     # Loop through all the coordinates in the segment
+  #     tsj = ''
+  #     s.coordinates.each do |c|
+  #       tsj += ',' if tsj != ''
+  #       # Add the coordinate
+  #       tsj += '['
+  #       tsj += "#{c.lon},#{c.lat}"
+  #       tsj += ",#{c.ele}" unless c.ele.nil?
+  #       tsj += ']'
+  #     end
+  #     j += tsj
+  #     j += ']'
+  #   end
+  #   "#{j}]}}"
   # end
-
-  def to_json(_indent = 0)
-    j = '{'
-    j += '"type": "Feature", '
-    unless name.nil?
-      j += '"properties": {'
-      j += "\"title\": \"#{name}\""
-      j += '},'
-    end
-    j += '"geometry": {'
-    j += '"type": "MultiLineString",'
-    j += '"coordinates": ['
-    # Loop through all the segment objects
-    segments.each_with_index do |s, index|
-      j += ',' if index.positive?
-      j += '['
-      # Loop through all the coordinates in the segment
-      tsj = ''
-      s.coordinates.each do |c|
-        tsj += ',' if tsj != ''
-        # Add the coordinate
-        tsj += '['
-        tsj += "#{c.lon},#{c.lat}"
-        tsj += ",#{c.ele}" unless c.ele.nil?
-        tsj += ']'
-      end
-      j += tsj
-      j += ']'
-    end
-    "#{j}]}}"
-  end
 end
 
 # Puts together a wolrd or Tracks and Waypoints

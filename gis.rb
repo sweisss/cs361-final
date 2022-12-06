@@ -28,7 +28,7 @@ class Waypoint
   end
 
   def geometry
-    geometry = { 'type' => gtype, 'coordinates' => coordinates}
+    geometry = { 'type' => gtype, 'coordinates' => coordinates }
   end
 
   def data
@@ -121,7 +121,7 @@ class World
 
   def data
     data = { 'type' => type,
-            'features' => collect}
+             'features' => collect }
   end
 
   def to_geojson

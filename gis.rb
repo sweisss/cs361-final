@@ -1,6 +1,8 @@
 #!/usr/bin/env ruby
 # frozen_string_literal: true
 
+require 'json'
+
 # A point represented by a latitude, longitude, and optional elevation, name, and icon.
 class Waypoint
   attr_reader :lat, :lon, :ele, :name, :icon
@@ -48,13 +50,8 @@ end
 class Track
   attr_reader :segments, :name
 
-  def initialize(segments, name = nil)
+  def initialize(segments, name: nil)
     @name = name
-    # segment_objects = []
-    # segments.each do |s|
-    #   segment_objects.append(TrackSegment.new(s)) # inject this dependency
-    # end
-    # @segments = segment_objects
     @segments = segments
   end
 
@@ -121,21 +118,21 @@ end
 def main
   w = Waypoint.new(-121.5, 45.5, 30, 'home', 'flag')
   w2 = Waypoint.new(-121.5, 45.6, nil, 'store', 'dot')
-  ts1 = [
+  ts1 = TrackSegment.new([
     Waypoint.new(-122, 45),
     Waypoint.new(-122, 46),
     Waypoint.new(-121, 46)
-  ]
+  ])
 
-  ts2 = [Waypoint.new(-121, 45), Waypoint.new(-121, 46)]
+  ts2 = TrackSegment.new([Waypoint.new(-121, 45), Waypoint.new(-121, 46)])
 
-  ts3 = [
+  ts3 = TrackSegment.new([
     Waypoint.new(-121, 45.5),
     Waypoint.new(-122, 45.5)
-  ]
+  ])
 
-  t = Track.new([ts1, ts2], 'track 1')
-  t2 = Track.new([ts3], 'track 2')
+  t = Track.new([ts1, ts2], name: 'track 1')
+  t2 = Track.new([ts3], name: 'track 2')
 
   world = World.new('My Data', [w, w2, t, t2])
 

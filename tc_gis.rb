@@ -44,7 +44,7 @@ class TestGis < Test::Unit::TestCase
       [Waypoint.new(-121, 45.5), Waypoint.new(-122, 45.5)]
     )
 
-    t = Track.new([ts1, ts2], 'track 1')
+    t = Track.new([ts1, ts2], name: 'track 1')
     expected = JSON.parse('{"type": "Feature",
       "properties": {"title": "track 1"},
       "geometry": {"type": "MultiLineString",
@@ -52,7 +52,7 @@ class TestGis < Test::Unit::TestCase
     result = JSON.parse(t.to_json)
     assert_equal(expected, result)
 
-    t = Track.new([ts3], 'track 2')
+    t = Track.new([ts3], name: 'track 2')
     expected = JSON.parse('{"type": "Feature",
       "properties": {"title": "track 2"},
       "geometry": {"type": "MultiLineString",
@@ -77,8 +77,8 @@ class TestGis < Test::Unit::TestCase
                              Waypoint.new(-122, 45.5)
                            ])
 
-    t = Track.new([ts1, ts2], 'track 1')
-    t2 = Track.new([ts3], 'track 2')
+    t = Track.new([ts1, ts2], name: 'track 1')
+    t2 = Track.new([ts3], name: 'track 2')
 
     w = World.new('My Data', [wp, wp2, t, t2])
 

@@ -20,7 +20,7 @@ class Waypoint
   end
 
   def coordinates
-    coordinates = [lat, lon, ele]
+    coordinates = [lon, lat, ele]
     coordinates = coordinates.compact
   end
 
@@ -32,23 +32,7 @@ class Waypoint
   end
 
   def to_json(_indent = 0)
-    # data.to_json
-    j = '{"type": "Feature",'
-    j += '"geometry": {"type": "Point","coordinates": '
-    j += "[#{lon},#{lat}"
-    j += ",#{ele}" unless ele.nil?
-    j += ']},'
-    if !name.nil? || !icon.nil?
-      j += '"properties": {'
-      j += "\"title\": \"#{name}\"" unless name.nil?
-      unless icon.nil?
-        j += ',' unless name.nil?
-        j += "\"icon\": \"#{icon}\""
-      end
-      j += '}'
-    end
-    j += '}'
-    j
+    data.to_json
   end
 end
 

@@ -15,6 +15,33 @@ class TestGis < Test::Unit::TestCase
     assert_equal(result, expected)
   end
 
+  def test_waypoint_with_nil_elevation
+    wp = Waypoint.new(-121.5, 45.5, nil, 'home', 'flag')
+    expected = JSON.parse('{"type": "Feature",
+      "properties": {"title": "home","icon": "flag"},
+      "geometry": {"type": "Point","coordinates": [-121.5,45.5]}}')
+    result = JSON.parse(wp.to_json)
+    assert_equal(result, expected)
+  end
+  
+  def test_waypoint_with_nil_name
+    wp = Waypoint.new(-121.5, 45.5, 30, nil, 'flag')
+    expected = JSON.parse('{"type": "Feature",
+      "properties": {"icon": "flag"},
+      "geometry": {"type": "Point","coordinates": [-121.5,45.5,30]}}')
+    result = JSON.parse(wp.to_json)
+    assert_equal(result, expected)
+  end
+
+  def test_waypoint_with_nil_icon
+    wp = Waypoint.new(-121.5, 45.5, 30, 'home', nil)
+    expected = JSON.parse('{"type": "Feature",
+      "properties": {"title": "home"},
+      "geometry": {"type": "Point","coordinates": [-121.5,45.5,30]}}')
+    result = JSON.parse(wp.to_json)
+    assert_equal(result, expected)
+  end
+
   def test_waypoint_with_nil_ele_and_name
     wp = Waypoint.new(-121.5, 45.5, nil, nil, 'flag')
     expected = JSON.parse('{"type": "Feature",

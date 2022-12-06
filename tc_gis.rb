@@ -4,8 +4,8 @@ require_relative 'gis'
 require 'json'
 require 'test/unit'
 
-# Tests for the gis.rb file
-class TestGis < Test::Unit::TestCase
+# Tests for Waypoint objects in the gis.rb file
+class TestWaypoint < Test::Unit::TestCase
   def test_waypoint
     wp = Waypoint.new(-121.5, 45.5, 30, 'home', 'flag')
     expected = JSON.parse('{"type": "Feature",
@@ -59,7 +59,10 @@ class TestGis < Test::Unit::TestCase
     result = JSON.parse(wp.to_json)
     assert_equal(result, expected)
   end
+end
 
+# Tests for Track objects in the gis.rb file
+class TestTracks < Test::Unit::TestCase
   def test_tracks
     ts1 = TrackSegment.new([
                              Waypoint.new(-122, 45),
@@ -91,7 +94,10 @@ class TestGis < Test::Unit::TestCase
     result = JSON.parse(t.to_json)
     assert_equal(expected, result)
   end
+end
 
+# Tests for World objects in the gis.rb file
+class TestWorld < Test::Unit::TestCase
   def test_world
     wp = Waypoint.new(-121.5, 45.5, 30, 'home', 'flag')
     wp2 = Waypoint.new(-121.5, 45.6, nil, 'store', 'dot')

@@ -79,43 +79,12 @@ class Track
   def data
     data = { 'type' => 'Feature', 'properties' => properties,
              'geometry' => { 'type' => 'MultiLineString',
-             'coordinates' => coordinates }}
+                             'coordinates' => coordinates } }
   end
 
   def to_json(_indent = 0)
     data.to_json
   end
-
-  # def to_json(_indent = 0)
-  #   j = '{'
-  #   j += '"type": "Feature", '
-  #   unless name.nil?
-  #     j += '"properties": {'
-  #     j += "\"title\": \"#{name}\""
-  #     j += '},'
-  #   end
-  #   j += '"geometry": {'
-  #   j += '"type": "MultiLineString",'
-  #   j += '"coordinates": ['
-  #   # Loop through all the segment objects
-  #   segments.each_with_index do |s, index|
-  #     j += ',' if index.positive?
-  #     j += '['
-  #     # Loop through all the coordinates in the segment
-  #     tsj = ''
-  #     s.coordinates.each do |c|
-  #       tsj += ',' if tsj != ''
-  #       # Add the coordinate
-  #       tsj += '['
-  #       tsj += "#{c.lon},#{c.lat}"
-  #       tsj += ",#{c.ele}" unless c.ele.nil?
-  #       tsj += ']'
-  #     end
-  #     j += tsj
-  #     j += ']'
-  #   end
-  #   "#{j}]}}"
-  # end
 end
 
 # Puts together a wolrd or Tracks and Waypoints

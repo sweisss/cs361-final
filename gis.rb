@@ -19,22 +19,20 @@ class Waypoint
 
   def properties
     properties = { 'title' => name, 'icon' => icon }
-    properties = properties.compact
+    properties.compact
   end
 
   def coordinates
     coordinates = [lon, lat, ele]
-    coordinates = coordinates.compact
+    coordinates.compact
   end
 
   def geometry
-    geometry = { 'type' => gtype, 'coordinates' => coordinates }
+    { 'type' => gtype, 'coordinates' => coordinates }
   end
 
   def data
-    data = { 'type' => type,
-             'properties' => properties,
-             'geometry' => geometry }
+    { 'type' => type, 'properties' => properties, 'geometry' => geometry }
   end
 
   def to_json(_indent = 0)
@@ -72,7 +70,7 @@ class Track
 
   def properties
     properties = { 'title' => name }
-    properties = properties.compact
+    properties.compact
   end
 
   def coordinates
@@ -84,12 +82,11 @@ class Track
   end
 
   def geometry
-    geometry = { 'type' => gtype, 'coordinates' => coordinates }
+    { 'type' => gtype, 'coordinates' => coordinates }
   end
 
   def data
-    data = { 'type' => type, 'properties' => properties,
-             'geometry' => geometry }
+    { 'type' => type, 'properties' => properties, 'geometry' => geometry }
   end
 
   def to_json(_indent = 0)
@@ -120,8 +117,7 @@ class World
   end
 
   def data
-    data = { 'type' => type,
-             'features' => collect }
+    { 'type' => type, 'features' => collect }
   end
 
   def to_geojson

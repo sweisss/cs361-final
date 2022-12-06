@@ -23,7 +23,7 @@ class TestGis < Test::Unit::TestCase
     result = JSON.parse(wp.to_json)
     assert_equal(result, expected)
   end
-  
+
   def test_waypoint_with_nil_name
     wp = Waypoint.new(-121.5, 45.5, 30, nil, 'flag')
     expected = JSON.parse('{"type": "Feature",

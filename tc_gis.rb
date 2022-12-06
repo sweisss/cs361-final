@@ -6,21 +6,25 @@ require 'test/unit'
 
 # Tests for the gis.rb file
 class TestGis < Test::Unit::TestCase
-  def test_waypoints
+  def test_waypoint
     wp = Waypoint.new(-121.5, 45.5, 30, 'home', 'flag')
     expected = JSON.parse('{"type": "Feature",
       "properties": {"title": "home","icon": "flag"},
       "geometry": {"type": "Point","coordinates": [-121.5,45.5,30]}}')
     result = JSON.parse(wp.to_json)
     assert_equal(result, expected)
+  end
 
+  def test_waypoint_with_nil_ele_and_name
     wp = Waypoint.new(-121.5, 45.5, nil, nil, 'flag')
     expected = JSON.parse('{"type": "Feature",
       "properties": {"icon": "flag"},
       "geometry": {"type": "Point","coordinates": [-121.5,45.5]}}')
     result = JSON.parse(wp.to_json)
     assert_equal(result, expected)
+  end
 
+  def test_waypoint_with_nil_ele_and_icon
     wp = Waypoint.new(-121.5, 45.5, nil, 'store', nil)
     expected = JSON.parse('{"type": "Feature",
       "properties": {"title": "store"},

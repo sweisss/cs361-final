@@ -63,7 +63,21 @@ end
 
 # Tests for Track objects in the gis.rb file
 class TestTracks < Test::Unit::TestCase
-  def test_tracks
+  def test_single_segment_track
+    ts = TrackSegment.new(
+      [Waypoint.new(-121, 45.5), Waypoint.new(-122, 45.5)]
+    )
+
+    t = Track.new([ts], name: 'track 2')
+    expected = JSON.parse('{"type": "Feature",
+      "properties": {"title": "track 2"},
+      "geometry": {"type": "MultiLineString",
+      "coordinates": [[[-121,45.5],[-122,45.5]]]}}')
+    result = JSON.parse(t.to_json)
+    assert_equal(expected, result)
+  end
+
+  def test_2_segment_track
     ts1 = TrackSegment.new([
                              Waypoint.new(-122, 45),
                              Waypoint.new(-122, 46),
@@ -74,23 +88,11 @@ class TestTracks < Test::Unit::TestCase
       [Waypoint.new(-121, 45), Waypoint.new(-121, 46)]
     )
 
-    ts3 = TrackSegment.new(
-      [Waypoint.new(-121, 45.5), Waypoint.new(-122, 45.5)]
-    )
-
     t = Track.new([ts1, ts2], name: 'track 1')
     expected = JSON.parse('{"type": "Feature",
       "properties": {"title": "track 1"},
       "geometry": {"type": "MultiLineString",
       "coordinates": [[[-122,45],[-122,46],[-121,46]],[[-121,45],[-121,46]]]}}')
-    result = JSON.parse(t.to_json)
-    assert_equal(expected, result)
-
-    t = Track.new([ts3], name: 'track 2')
-    expected = JSON.parse('{"type": "Feature",
-      "properties": {"title": "track 2"},
-      "geometry": {"type": "MultiLineString",
-      "coordinates": [[[-121,45.5],[-122,45.5]]]}}')
     result = JSON.parse(t.to_json)
     assert_equal(expected, result)
   end

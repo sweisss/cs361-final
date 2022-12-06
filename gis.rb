@@ -11,7 +11,6 @@ class Waypoint
     @ele = ele
     @name = name
     @icon = icon
-    @type = 'Feature'
   end
 
   def properties
@@ -25,10 +24,10 @@ class Waypoint
   end
 
   def data
-    data = { 'type' => 'Feature', 
-      'properties' => properties,
-      'geometry' => {'type' => 'Point',
-        'coordinates' => coordinates}}
+    data = { 'type' => 'Feature',
+             'properties' => properties,
+             'geometry' => { 'type' => 'Point',
+                             'coordinates' => coordinates } }
   end
 
   def to_json(_indent = 0)
